@@ -1,0 +1,156 @@
+basePath: /api
+definitions:
+  domain.BaseResponse:
+    properties:
+      data:
+        $ref: '#/definitions/domain.MatrixResponse'
+      error:
+        example: matrix cannot be empty
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  domain.MatrixRequest:
+    properties:
+      matrix:
+        items:
+          items:
+            format: float64
+            type: number
+          type: array
+        type: array
+    required:
+    - matrix
+    type: object
+  domain.MatrixResponse:
+    properties:
+      original_matrix:
+        items:
+          items:
+            format: float64
+            type: number
+          type: array
+        type: array
+      qr_factorization:
+        $ref: '#/definitions/domain.QRFactorization'
+      rotated_matrix:
+        items:
+          items:
+            format: float64
+            type: number
+          type: array
+        type: array
+      statistics:
+        $ref: '#/definitions/domain.NodeStatistics'
+    type: object
+  domain.NodeStatistics:
+    properties:
+      average:
+        example: 0.45
+        type: number
+      is_diagonal:
+        additionalProperties:
+          type: boolean
+        example:
+          Q: false
+          R: false
+        type: object
+      max_value:
+        example: 6
+        type: number
+      min_value:
+        example: -7.81
+        type: number
+      total_sum:
+        example: 2.56
+        type: number
+    type: object
+  domain.QRFactorization:
+    properties:
+      Q:
+        items:
+          items:
+            format: float64
+            type: number
+          type: array
+        type: array
+      R:
+        items:
+          items:
+            format: float64
+            type: number
+          type: array
+        type: array
+    type: object
+info:
+  contact:
+    email: your.email@example.com
+    name: API Support
+  description: API for matrix rotation and QR factorization
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Interseguro Matrix API
+  version: "1.0"
+paths:
+  /auth/token:
+    get:
+      description: Generates a valid JWT token valid for 24h for testing purposes.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Generate an auth token
+      tags:
+      - Auth
+  /matrix:
+    post:
+      consumes:
+      - application/json
+      description: Rotates a matrix, performs QR factorization, and retrieves statistics
+        from Node.js API
+      parameters:
+      - description: Matrix data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/domain.MatrixRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.BaseResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.BaseResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.BaseResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Process a matrix
+      tags:
+      - Matrix
+securityDefinitions:
+  ApiKeyAuth:
+    description: Escribe "Bearer " seguido de tu token JWT.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
