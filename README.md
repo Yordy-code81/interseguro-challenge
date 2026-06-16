@@ -32,6 +32,22 @@ Solo necesitas tener instalado en tu sistema:
 
 *No es necesario tener Go ni Node.js instalados localmente, ya que Docker se encargará de construir los contenedores y descargar las dependencias.*
 
+## ⚙️ Configuración de Variables de Entorno (.env)
+
+Por seguridad, los archivos `.env` reales no se suben al repositorio. Al clonar este proyecto, debes crear tus propios archivos basándote en los ejemplos provistos.
+
+En la terminal, ejecuta los siguientes comandos para crear una copia de los archivos de ejemplo:
+
+```bash
+# Para la API de Go
+cp go-matrix-api/.env.example go-matrix-api/.env
+
+# Para la API de Node.js
+cp node-analytics-api/.env.example node-analytics-api/.env
+```
+
+*Nota: Aunque Docker Compose inyecta algunas de estas variables automáticamente, es una excelente práctica tenerlas creadas localmente para ejecutar pruebas o correr los servidores fuera de Docker.*
+
 ---
 
 ## 🚀 Levantando el Proyecto

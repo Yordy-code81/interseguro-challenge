@@ -9,9 +9,9 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - PORT=3000
-      - JWT_SECRET=super_secret_jwt_key_interseguro
-      - NODE_API_URL=http://node-analytics-api:4000/api/analytics # Cambiará cuando agreguemos Node
+      - PORT=${GO_PORT:-3000}
+      - JWT_SECRET=${JWT_SECRET:-super_secret_jwt_key_interseguro}
+      - NODE_API_URL=${NODE_API_URL:-http://node-analytics-api:4000/api/analytics}
     restart: unless-stopped
     networks:
       - interseguro-net
@@ -24,8 +24,8 @@ services:
     ports:
       - "4000:4000"
     environment:
-      - PORT=4000
-      - JWT_SECRET=super_secret_jwt_key_interseguro
+      - PORT=${NODE_PORT:-4000}
+      - JWT_SECRET=${JWT_SECRET:-super_secret_jwt_key_interseguro}
     restart: unless-stopped
     networks:
       - interseguro-net
